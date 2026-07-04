@@ -2,7 +2,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
-from src.project_os import PROJECT_OS_PROMPT
+
+from src.prompts.project_os import PROJECT_OS_PROMPT
+from src.prompts.ceo import CEO_PROMPT
 
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
@@ -21,17 +23,21 @@ while True:
         break
 
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.5",
         input=[
-            {
-                "role": "system",
-                "content": PROJECT_OS_PROMPT,
-            },
-            {
-                "role": "user",
-                "content": user_input,
-            },
-        ],
+    {
+        "role":"system",
+        "content":CEO_PROMPT
+    },
+    {
+        "role":"system",
+        "content":PROJECT_OS_PROMPT
+    },
+    {
+        "role":"user",
+        "content":user_input
+    }
+]
     )
 
     print("\nProject OS：")
