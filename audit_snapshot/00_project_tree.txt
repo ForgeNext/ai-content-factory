@@ -1,0 +1,37 @@
+﻿ForgeNext Project Tree
+Root: C:\ForgeNext\ai-content-factory
+Generated: 2026-07-19 16:03:00
+
+[FILE] baseline_snapshot.ps1
+[DIR]  blueprint
+[DIR]  blueprint\00_Foundation
+[FILE] blueprint\00_Foundation\mission.md
+[FILE] blueprint\00_Foundation\principles.md
+[FILE] blueprint\00_Foundation\purpose.md
+[FILE] blueprint\00_Foundation\README.md
+[FILE] blueprint\00_Foundation\vision.md
+[DIR]  blueprint\01_Company
+[FILE] blueprint\01_Company\company_constitution.md
+[FILE] blueprint\01_Company\company_standard.md
+[FILE] blueprint\01_Company\employee_standard.md
+[DIR]  blueprint\02_AI_Employees
+[FILE] blueprint\02_AI_Employees\ai_employee_template.md
+[FILE] blueprint\02_AI_Employees\ai_organization_map.md
+[FILE] blueprint\blueprint_backlog.md
+[FILE] blueprint\blueprint_responsibility_map.md
+[FILE] blueprint\organization_audit.md
+[FILE] blueprint\phase2_completion_review.md
+[FILE] blueprint\phase2_final_audit.md
+[FILE] blueprint\README.md
+[FILE] current_work_state.md
+[DIR]  Knowledge
+[FILE] Knowledge\README.md
+[DIR]  output
+[DIR]  runtime
+[FILE] runtime\README.md
+[DIR]  src
+[DIR]  src\rule_engine
+[FILE] src\rule_engine\__init__.py
+[FILE] src\rule_engine\evidence.py
+[FILE] src\rule_engine\result.py
+[FILE] src\rule_engine\rule_engine.py

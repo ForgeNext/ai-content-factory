@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Environment
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+
+# Generated runtime files
+output/
+logs/
+runtime/
+
+# Operating system
+Thumbs.db
+.DS_Store
