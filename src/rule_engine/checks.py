@@ -123,3 +123,141 @@ def check_required_documents(project_root: Path) -> list[CheckResult]:
         )
 
     return results
+
+
+def check_document_markers(
+    project_root: Path,
+    rule_id: str,
+    relative_path: str,
+    required_markers: tuple[str, ...],
+    rule_name: str | None = None,
+) -> CheckResult:
+    """Evidence文書に必要な記述が存在するか確認する。"""
+
+    file_path = project_root / relative_path
+    display_name = rule_name or f"Document markers: {relative_path}"
+
+    if not file_path.exists():
+        return CheckResult(
+            rule_id=rule_id,
+            rule_name=display_name,
+            status=RuleStatus.FAIL,
+            message="確認対象のEvidence文書が存在しません。",
+            evidence={
+                "path": str(file_path),
+                "exists": False,
+                "required_markers": list(required_markers),
+            },
+        )
+
+    if not file_path.is_file():
+        return CheckResult(
+            rule_id=rule_id,
+            rule_name=display_name,
+            status=RuleStatus.FAIL,
+            message="確認対象のパスがファイルではありません。",
+            evidence={
+                "path": str(file_path),
+                "exists": True,
+                "is_file": False,
+            },
+        )
+
+    try:
+        content = file_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return CheckResult(
+            rule_id=rule_id,
+            rule_name=display_name,
+            status=RuleStatus.FAIL,
+            message="Evidence文書をUTF-8形式で読み込めません。",
+            evidence={
+                "path": str(file_path),
+                "readable": False,
+            },
+        )
+    except OSError as error:
+        return CheckResult(
+            rule_id=rule_id,
+            rule_name=display_name,
+            status=RuleStatus.FAIL,
+            message="Evidence文書の読み込み中にエラーが発生しました。",
+            evidence={
+                "path": str(file_path),
+                "error": str(error),
+            },
+        )
+
+    missing_markers = [
+        marker
+        for marker in required_markers
+        if marker not in content
+    ]
+
+    if missing_markers:
+        return CheckResult(
+            rule_id=rule_id,
+            rule_name=display_name,
+            status=RuleStatus.FAIL,
+            message="Evidence文書に必要な記述が不足しています。",
+            evidence={
+                "path": str(file_path),
+                "required_markers": list(required_markers),
+                "missing_markers": missing_markers,
+            },
+        )
+
+    return CheckResult(
+        rule_id=rule_id,
+        rule_name=display_name,
+        status=RuleStatus.PASS,
+        message="Evidence文書に必要な記述が確認できました。",
+        evidence={
+            "path": str(file_path),
+            "required_markers": list(required_markers),
+            "missing_markers": [],
+        },
+    )
+
+
+def check_incident_closure_evidence(
+    project_root: Path,
+    incident_id: str,
+    relative_path: str,
+    required_markers: tuple[str, ...],
+    ceo_approved: bool = False,
+) -> list[CheckResult]:
+    """インシデントのEvidenceとCEO承認を確認する。"""
+
+    results = [
+        check_document_markers(
+            project_root=project_root,
+            rule_id=f"incident.{incident_id}.evidence",
+            relative_path=relative_path,
+            required_markers=required_markers,
+            rule_name=f"Incident closure evidence: {incident_id}",
+        )
+    ]
+
+    results.append(
+        CheckResult(
+            rule_id=f"incident.{incident_id}.ceo_approval",
+            rule_name=f"CEO closure approval: {incident_id}",
+            status=(
+                RuleStatus.PASS
+                if ceo_approved
+                else RuleStatus.REVIEW_REQUIRED
+            ),
+            message=(
+                "CEOによる正式クローズ承認が確認されました。"
+                if ceo_approved
+                else "CEOによる正式クローズ判断が必要です。"
+            ),
+            evidence={
+                "incident_id": incident_id,
+                "ceo_approved": ceo_approved,
+            },
+        )
+    )
+
+    return results

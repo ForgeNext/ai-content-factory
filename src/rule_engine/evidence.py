@@ -41,7 +41,7 @@ class EvidenceWriter:
 
         payload = {
             "engine": "ForgeNext Rule Engine",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "executed_at": executed_at.isoformat(),
             "result": result.to_dict(),
             "context": context or {},

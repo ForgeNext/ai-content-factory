@@ -5,7 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from .checks import check_required_documents
+from .checks import (
+    check_incident_closure_evidence,
+    check_required_documents,
+)
 from .evidence import EvidenceWriter
 from .result import (
     CheckResult,
@@ -58,12 +61,90 @@ class RuleEngine:
             output_directory=evidence_directory,
         )
 
-    def collect_checks(self) -> list[CheckResult]:
-        """Rule Engine v1.0で使用する確認結果を収集する。"""
+    def collect_checks(
+        self,
+        context: dict[str, Any] | None = None,
+    ) -> list[CheckResult]:
+        """会社基準とcontextで指定された追加監査を実行する。"""
 
-        return check_required_documents(
+        checks = check_required_documents(
             project_root=self.project_root,
         )
+
+        if context is None:
+            return checks
+
+        incident_closure = context.get("incident_closure")
+
+        if incident_closure is None:
+            return checks
+
+        if not isinstance(incident_closure, dict):
+            checks.append(
+                CheckResult(
+                    rule_id="incident.configuration",
+                    rule_name="Incident closure configuration",
+                    status=RuleStatus.FAIL,
+                    message="incident_closureの設定形式が不正です。",
+                    evidence={
+                        "received_type": type(
+                            incident_closure
+                        ).__name__,
+                    },
+                )
+            )
+            return checks
+
+        incident_id = incident_closure.get("incident_id")
+        evidence_path = incident_closure.get("evidence_path")
+        required_markers = incident_closure.get("required_markers")
+        ceo_approved = incident_closure.get(
+            "ceo_approved",
+            False,
+        )
+
+        configuration_is_valid = (
+            isinstance(incident_id, str)
+            and bool(incident_id.strip())
+            and isinstance(evidence_path, str)
+            and bool(evidence_path.strip())
+            and isinstance(required_markers, (list, tuple))
+            and bool(required_markers)
+            and all(
+                isinstance(marker, str) and bool(marker.strip())
+                for marker in required_markers
+            )
+            and isinstance(ceo_approved, bool)
+        )
+
+        if not configuration_is_valid:
+            checks.append(
+                CheckResult(
+                    rule_id="incident.configuration",
+                    rule_name="Incident closure configuration",
+                    status=RuleStatus.FAIL,
+                    message="インシデント監査の必須設定が不足しています。",
+                    evidence={
+                        "incident_id": incident_id,
+                        "evidence_path": evidence_path,
+                        "required_markers": required_markers,
+                        "ceo_approved": ceo_approved,
+                    },
+                )
+            )
+            return checks
+
+        checks.extend(
+            check_incident_closure_evidence(
+                project_root=self.project_root,
+                incident_id=incident_id.strip(),
+                relative_path=evidence_path.strip(),
+                required_markers=tuple(required_markers),
+                ceo_approved=ceo_approved,
+            )
+        )
+
+        return checks
 
     def run(
         self,
@@ -72,7 +153,9 @@ class RuleEngine:
     ) -> tuple[EngineResult, Path]:
         """全チェックを実行し、Evidenceを保存する。"""
 
-        checks = self.collect_checks()
+        checks = self.collect_checks(
+            context=context,
+        )
         status = determine_engine_status(checks)
         summary = self._build_summary(
             status=status,
