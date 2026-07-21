@@ -1,7 +1,12 @@
 ﻿ForgeNext Project Tree
 Root: C:\ForgeNext\ai-content-factory
-Generated: 2026-07-19 16:03:00
+Generated: 2026-07-22 07:23:47
 
+[FILE] .env
+[FILE] .gitignore
+[DIR]  audit_evidence
+[FILE] audit_evidence\incident_001_final_audit.md
+[FILE] audit_evidence\runtime_integration_verification.md
 [FILE] baseline_snapshot.ps1
 [DIR]  blueprint
 [DIR]  blueprint\00_Foundation
@@ -24,14 +29,37 @@ Generated: 2026-07-19 16:03:00
 [FILE] blueprint\phase2_final_audit.md
 [FILE] blueprint\README.md
 [FILE] current_work_state.md
+[DIR]  docs
+[FILE] docs\blueprint.md
+[FILE] hell -ExecutionPolicy Bypass -File .baseline_snapshot.ps1
 [DIR]  Knowledge
 [FILE] Knowledge\README.md
+[FILE] main.py
 [DIR]  output
-[DIR]  runtime
-[FILE] runtime\README.md
+[DIR]  output\backups
+[FILE] output\backups\current_work_state_before_repair_20260721_055336.md
+[FILE] output\backups\main_before_runtime_guard_20260722_001342.py
+[DIR]  output\rule_engine_evidence
+[FILE] output\rule_engine_evidence\rule_engine_20260721_051922_603690.json
+[FILE] output\rule_engine_evidence\rule_engine_20260721_053937_930730.json
+[FILE] output\rule_engine_evidence\rule_engine_20260721_053947_428844.json
+[FILE] output\rule_engine_evidence\rule_engine_20260721_054134_496003.json
+[FILE] output\rule_engine_evidence\rule_engine_20260721_054414_873769.json
+[FILE] output\rule_engine_evidence\rule_engine_20260721_055028_596389.json
+[FILE] output\rule_engine_evidence\rule_engine_20260722_001924_894783.json
+[FILE] output\rule_engine_evidence\rule_engine_20260722_002850_344928.json
+[FILE] output\rule_engine_evidence\rule_engine_20260722_054626_424064.json
+[FILE] output\runtime_integration_smoke_test.txt
+[FILE] requirements.txt
 [DIR]  src
+[DIR]  src\prompts
+[FILE] src\prompts\ceo.py
+[FILE] src\prompts\project_os.py
 [DIR]  src\rule_engine
 [FILE] src\rule_engine\__init__.py
+[FILE] src\rule_engine\checks.py
 [FILE] src\rule_engine\evidence.py
+[FILE] src\rule_engine\operational_test.py
 [FILE] src\rule_engine\result.py
 [FILE] src\rule_engine\rule_engine.py
+[FILE] src\workflow.py

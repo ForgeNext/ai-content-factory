@@ -1,28 +1,63 @@
 # ForgeNext Blueprint
 
-ForgeNextの会社基準・AI社員共通規範・事業設計を、実装可能なMarkdown資産として管理するフォルダです。
+ForgeNextの経営理念、会社基準、AI社員共通規範、Blueprintを管理するディレクトリです。
 
-## 現在地
+---
 
-- Phase 1：Foundation（完了）
-- Phase 2：Organization（進行中）
-- 現在：Company Standardのファイル実装
-- 次：AI Employee Standard v1.0の実装
-- その後：Research AIへの読み込みと動作確認
+# 現在地
 
-## 推奨配置先
+- Phase 1：Foundation　✅ Completed
+- Phase 2：Organization　✅ Completed
+- Phase 3：Implementation　✅ Completed
+- Current Status：Ready for Phase 4
 
-既存リポジトリが以下の場合：
+---
 
-`C:\ForgeNext\ai-content-factory`
+# Blueprint構成
 
-このフォルダを次のように配置してください。
+## 00_Foundation
 
-`C:\ForgeNext\ai-content-factory\blueprint`
+Mission・Vision・Purpose・Principles
 
-## Git管理例
+## 01_Company
 
-```bash
-git add blueprint
-git commit -m "Add ForgeNext company standards v1.0"
-```
+Company Constitution
+
+Company Standard v1.2
+
+Employee Standard v1.1
+
+## 02_AI_Employees
+
+AI Organization
+
+AI Employee Template
+
+---
+
+# 実装済みシステム
+
+- Runtime Integration
+- Rule Engine
+- Audit Evidence
+- Operational Test
+- Runtime Guard
+
+---
+
+# 開発方針
+
+ForgeNextは
+
+- Evidence First
+- Mission First
+- Audit Before Decision
+- Knowledge First
+
+を基本原則として開発を行う。
+
+---
+
+Last Updated
+
+Phase 3 Completion
